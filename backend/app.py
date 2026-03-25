@@ -4,9 +4,24 @@ import os
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 
+# Try to load .env file for local development
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
 app = Flask(__name__)
 
-# Enable CORS for all routes - allow requests from any origin
+# Configuration from environment variables
+SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key-change-in-production')
+FLASK_ENV = os.getenv('FLASK_ENV', 'development')
+PORT = int(os.getenv('PORT', 5000))
+HOST = os.getenv('HOST', '0.0.0.0')
+
+app.config['SECRET_KEY'] = SECRET_KEY
+
+# CORS Configuration
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 def get_db():
