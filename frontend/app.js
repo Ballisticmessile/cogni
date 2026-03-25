@@ -8,6 +8,11 @@ let quizState = {
   startTime: null
 };
 
+// API URL - dynamically set based on environment
+const API_URL = window.location.hostname === 'localhost' 
+  ? 'http://127.0.0.1:5000'
+  : `https://${window.location.hostname.replace('www.', '')}`;
+
 // Theme Management
 function toggleTheme() {
   const body = document.body;
@@ -80,7 +85,7 @@ async function login() {
   }
 
   try {
-    const res = await fetch("http://127.0.0.1:5000/login", {
+    const res = await fetch(`${API_URL}/login`, {
       method: "POST",
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({ username, password })
@@ -128,7 +133,7 @@ async function signup() {
   }
 
   try {
-    const res = await fetch("http://127.0.0.1:5000/register", {
+    const res = await fetch(`${API_URL}/register`, {
       method: "POST",
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({ name, username, password })
@@ -221,7 +226,7 @@ async function loadSubjects() {
 
 async function startQuiz(subjectId, subjectName) {
   try {
-    const res = await fetch(`http://127.0.0.1:5000/questions/${subjectId}`);
+    const res = await fetch(`${API_URL}/questions/${subjectId}`);
     const questions = await res.json();
 
     if (questions.length === 0) {
@@ -338,7 +343,7 @@ async function submitQuiz() {
 
   // Save result to backend
   try {
-    const res = await fetch("http://127.0.0.1:5000/submit", {
+    const res = await fetch(`${API_URL}/submit`, {
       method: "POST",
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({
@@ -456,7 +461,7 @@ async function handleAddQuestion(event) {
   }
   
   try {
-    const res = await fetch("http://127.0.0.1:5000/add-question", {
+    const res = await fetch(`${API_URL}/add-question`, {
       method: "POST",
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({
@@ -500,7 +505,7 @@ async function handleAddSubject(event) {
   const category = document.getElementById("subjectCategory").value;
   
   try {
-    const res = await fetch("http://127.0.0.1:5000/add-subject", {
+    const res = await fetch(`${API_URL}/add-subject`, {
       method: "POST",
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({
@@ -538,12 +543,12 @@ function showMessage(elementId, message, type) {
 
 async function loadManageData() {
   try {
-    const subjectsRes = await fetch("http://127.0.0.1:5000/subjects");
+    const subjectsRes = await fetch(`${API_URL}/subjects`);
     const subjects = await subjectsRes.json();
     
     let totalQuestions = 0;
     for (let subject of subjects) {
-      const questionsRes = await fetch(`http://127.0.0.1:5000/questions/${subject.id}`);
+      const questionsRes = await fetch(`${API_URL}/questions/${subject.id}`);
       const questions = await questionsRes.json();
       totalQuestions += questions.length;
     }
