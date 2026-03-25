@@ -138,7 +138,12 @@ async function signup() {
       document.getElementById("signupUsername").value = "";
       document.getElementById("signupPassword").value = "";
     } else {
-      alert(data.error || "Signup failed");
+      // Provide specific error message
+      if (data.error && data.error.includes("exists")) {
+        alert("This username already exists. Please choose a different one.");
+      } else {
+        alert(data.error || "Signup failed");
+      }
     }
   } catch (error) {
     alert("Connection error: " + error.message);
@@ -245,8 +250,10 @@ function displayQuestion() {
   document.getElementById("progressFill").style.width = progressPercent + "%";
   document.getElementById("questionCounter").textContent = `Question ${quizState.currentQuestionIndex + 1} of ${totalQuestions}`;
 
-  // Display question
-  document.getElementById("questionText").textContent = question.text;
+  // Display question - ensure it's always visible
+  const questionElement = document.getElementById("questionText");
+  questionElement.textContent = question.text || "Question text unavailable";
+  questionElement.style.display = "block";
 
   // Display options
   const optionsContainer = document.getElementById("optionsContainer");
