@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cogni - Quiz Platform</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="light-mode">
+  <!-- Theme Toggle -->
+  <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark Mode">
+    <span class="theme-icon">🌙</span>
+  </button>
+
+  <div class="container">
+    <div class="auth-container">
+      <!-- Login Form -->
+      <div id="loginForm" class="form-wrapper active">
+        <div class="form-content">
+          <div class="header">
+            <h1>Welcome Back</h1>
+            <p>Sign in to continue learning</p>
+          </div>
+          
+          <form onsubmit="handleLogin(event)">
+            <div class="form-group">
+              <label for="username">Username</label>
+              <input id="username" type="text" placeholder="Enter your username" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input id="password" type="password" placeholder="Enter your password" required>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Login</button>
+          </form>
+          
+          <div class="form-footer">
+            <p>Don't have an account? <button type="button" onclick="toggleAuth()" class="link-btn">Sign up</button></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Signup Form -->
+      <div id="signupForm" class="form-wrapper">
+        <div class="form-content">
+          <div class="header">
+            <h1>Create Account</h1>
+            <p>Join us to start your learning journey</p>
+          </div>
+          
+          <form onsubmit="handleSignup(event)">
+            <div class="form-group">
+              <label for="signupName">Full Name</label>
+              <input id="signupName" type="text" placeholder="Enter your full name" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="signupUsername">Username</label>
+              <input id="signupUsername" type="text" placeholder="Choose a username" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="signupPassword">Password</label>
+              <input id="signupPassword" type="password" placeholder="Create a password" required>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Create Account</button>
+          </form>
+          
+          <div class="form-footer">
+            <p>Already have an account? <button type="button" onclick="toggleAuth()" class="link-btn">Login</button></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Brand Section -->
+      <div class="brand-section">
+        <div class="brand-content">
+          <h2>Cogni</h2>
+          <p>Master any subject with interactive quizzes and comprehensive learning paths</p>
+          <ul class="features">
+            <li>📚 Comprehensive courses</li>
+            <li>⚡ Instant feedback</li>
+            <li>🎯 Track your progress</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard Section (Hidden until logged in) -->
+    <div id="dashboard" class="dashboard" style="display:none;">
+      <div class="navbar">
+        <h1>Cogni Dashboard</h1>
+        <div class="navbar-actions">
+          <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark Mode">
+            <span class="theme-icon">🌙</span>
+          </button>
+          <button id="adminToggleBtn" onclick="showAdminPanel()" class="btn btn-secondary" style="display:none;">Admin Panel</button>
+          <button onclick="logout()" class="btn btn-secondary">Logout</button>
+        </div>
+      </div>
+
+      <div class="dashboard-content">
+        <h2>📚 Select a Subject</h2>
+        <button onclick="loadSubjects()" class="btn btn-primary">Load Subjects</button>
+        <ul id="subjects" class="subjects-list"></ul>
+      </div>
+    </div>
+
+    <!-- Admin Panel Section -->
+    <div id="adminPanel" class="dashboard" style="display:none;">
+      <div class="navbar">
+        <h1>Admin Panel</h1>
+        <button onclick="backToDashboard()" class="btn btn-secondary">Back to Dashboard</button>
+      </div>
+
+      <div class="dashboard-content">
+        <div class="admin-tabs">
+          <button class="admin-tab-btn active" onclick="switchAdminTab('add-question')">Add Question</button>
+          <button class="admin-tab-btn" onclick="switchAdminTab('add-subject')">Add Subject</button>
+          <button class="admin-tab-btn" onclick="switchAdminTab('manage')">Manage</button>
+        </div>
+
+        <!-- Add Question Tab -->
+        <div id="add-question-tab" class="admin-tab-content active">
+          <h3>Add New Question</h3>
+          <form onsubmit="handleAddQuestion(event)" class="admin-form">
+            <div class="form-group">
+              <label for="questionSubject">Subject</label>
+              <select id="questionSubject" required>
+                <option value="">Select a subject</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="questionText">Question</label>
+              <textarea id="questionText" placeholder="Enter the question text" required></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="option1">Option 1</label>
+              <input type="text" id="option1" placeholder="Enter option 1" required>
+            </div>
+
+            <div class="form-group">
+              <label for="option2">Option 2</label>
+              <input type="text" id="option2" placeholder="Enter option 2" required>
+            </div>
+
+            <div class="form-group">
+              <label for="option3">Option 3</label>
+              <input type="text" id="option3" placeholder="Enter option 3" required>
+            </div>
+
+            <div class="form-group">
+              <label for="option4">Option 4</label>
+              <input type="text" id="option4" placeholder="Enter option 4" required>
+            </div>
+
+            <div class="form-group">
+              <label for="correctOption">Correct Option (0-3)</label>
+              <input type="number" id="correctOption" min="0" max="3" placeholder="e.g., 0, 1, 2, or 3" required>
+            </div>
+
+            <div class="form-group">
+              <label for="difficulty">Difficulty</label>
+              <select id="difficulty" required>
+                <option value="Easy">Easy</option>
+                <option value="Medium">Medium</option>
+                <option value="Hard">Hard</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Add Question</button>
+            <div id="addQuestionMessage" class="message"></div>
+          </form>
+        </div>
+
+        <!-- Add Subject Tab -->
+        <div id="add-subject-tab" class="admin-tab-content">
+          <h3>Add New Subject</h3>
+          <form onsubmit="handleAddSubject(event)" class="admin-form">
+            <div class="form-group">
+              <label for="subjectName">Subject Name</label>
+              <input type="text" id="subjectName" placeholder="e.g., Advanced Physics" required>
+            </div>
+
+            <div class="form-group">
+              <label for="subjectIcon">Icon/Emoji</label>
+              <input type="text" id="subjectIcon" placeholder="e.g., ⚛️" maxlength="2" required>
+            </div>
+
+            <div class="form-group">
+              <label for="subjectCategory">Category</label>
+              <input type="text" id="subjectCategory" placeholder="e.g., Science" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Add Subject</button>
+            <div id="addSubjectMessage" class="message"></div>
+          </form>
+        </div>
+
+        <!-- Manage Tab -->
+        <div id="manage-tab" class="admin-tab-content">
+          <h3>Manage Questions & Subjects</h3>
+          <div class="manage-stats">
+            <p><strong>Total Subjects:</strong> <span id="totalSubjects">0</span></p>
+            <p><strong>Total Questions:</strong> <span id="totalQuestions">0</span></p>
+          </div>
+          <button onclick="loadManageData()" class="btn btn-primary">Refresh Stats</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quiz Section (Hidden until user starts a quiz) -->
+    <div id="quizContainer" class="dashboard" style="display:none;">
+      <div class="navbar">
+        <h1 id="quizTitle">Quiz</h1>
+        <button onclick="exitQuiz()" class="btn btn-secondary">Exit</button>
+      </div>
+
+      <div class="dashboard-content">
+        <div class="quiz-wrapper">
+          <div class="quiz-progress">
+            <div class="progress-bar">
+              <div id="progressFill" class="progress-fill"></div>
+            </div>
+            <p id="questionCounter">Question 1 of 10</p>
+          </div>
+
+          <div class="quiz-question">
+            <h2 id="questionText">Question text</h2>
+            <div id="optionsContainer" class="options-container"></div>
+          </div>
+
+          <div class="quiz-actions">
+            <button id="prevBtn" onclick="previousQuestion()" class="btn btn-secondary" style="display:none;">Previous</button>
+            <button id="nextBtn" onclick="nextQuestion()" class="btn btn-primary">Next Question</button>
+          </div>
+        </div>
+
+        <div class="quiz-summary" id="quizSummary" style="display:none;">
+          <h2>Quiz Complete!</h2>
+          <div class="score-display">
+            <p id="scoreText">Your Score: 0/0</p>
+            <p id="percentageText">Percentage: 0%</p>
+          </div>
+          <button onclick="backToDashboard()" class="btn btn-primary">Back to Dashboard</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
