@@ -22,11 +22,11 @@ c.execute("""CREATE TABLE questions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     subject_id INTEGER,
     text TEXT,
-    option_a TEXT,
-    option_b TEXT,
-    option_c TEXT,
-    option_d TEXT,
-    correct INTEGER,
+    option1 TEXT,
+    option2 TEXT,
+    option3 TEXT,
+    option4 TEXT,
+    correct_option INTEGER,
     difficulty TEXT
 )""")
 
@@ -113,7 +113,7 @@ questions = [
 
 for question in questions:
     c.execute("""INSERT INTO questions 
-    (subject_id, text, option_a, option_b, option_c, option_d, correct, difficulty) 
+    (subject_id, text, option1, option2, option3, option4, correct_option, difficulty) 
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)""", question)
 
 conn.commit()
