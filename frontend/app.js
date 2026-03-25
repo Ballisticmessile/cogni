@@ -75,7 +75,7 @@ async function login() {
   const password = document.getElementById("password").value;
 
   if (!username || !password) {
-    alert("Please fill all fields");
+    alert("⚠️ Please fill all fields");
     return;
   }
 
@@ -90,13 +90,13 @@ async function login() {
 
     if (res.ok) {
       currentUser = data;
-      alert("Login successful!");
+      alert("✅ Login successful!");
       showDashboard();
     } else {
-      alert(data.error || "Login failed");
+      alert("❌ " + (data.error || "Login failed"));
     }
   } catch (error) {
-    alert("Connection error: " + error.message);
+    alert("❌ Connection error: " + error.message);
   }
 }
 
@@ -106,18 +106,24 @@ async function signup() {
   const password = document.getElementById("signupPassword").value;
 
   if (!name || !username || !password) {
-    alert("Please fill all fields");
+    alert("⚠️ Please fill all fields");
+    return;
+  }
+
+  // Username validation
+  if (username.length < 3) {
+    alert("⚠️ Username must be at least 3 characters long");
     return;
   }
 
   // Prevent signup with username "admin"
   if (username.toLowerCase() === "admin") {
-    alert("Username 'admin' is reserved and cannot be created");
+    alert("⛔ Username 'admin' is reserved and cannot be created");
     return;
   }
 
   if (password.length < 6) {
-    alert("Password must be at least 6 characters");
+    alert("⚠️ Password must be at least 6 characters");
     return;
   }
 
@@ -131,7 +137,7 @@ async function signup() {
     const data = await res.json();
 
     if (res.ok) {
-      alert("Account created successfully! Please login.");
+      alert("✅ Account created successfully! Please login.");
       toggleAuth();
       // Clear signup form
       document.getElementById("signupName").value = "";
@@ -140,13 +146,13 @@ async function signup() {
     } else {
       // Provide specific error message
       if (data.error && data.error.includes("exists")) {
-        alert("This username already exists. Please choose a different one.");
+        alert(`❌ Username '${username}' already exists.\n\nPlease choose a different username and try again.`);
       } else {
-        alert(data.error || "Signup failed");
+        alert("❌ Signup failed: " + (data.error || "Unknown error"));
       }
     }
   } catch (error) {
-    alert("Connection error: " + error.message);
+    alert("❌ Connection error: " + error.message);
   }
 }
 
