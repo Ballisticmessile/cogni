@@ -9,7 +9,7 @@ import sys
 os.chdir(r"C:\Users\samruddhi\Desktop\cogni")
 
 USERNAME = "ballisticmessile"
-TOKEN = "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"
+TOKEN = "YOUR_GITHUB_TOKEN_HERE"  # Replace with your personal access token
 REPO_NAME = "cogni"
 
 print("[*] Testing GitHub token...")

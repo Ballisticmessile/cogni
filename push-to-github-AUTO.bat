@@ -5,7 +5,7 @@ REM This script automatically pushes your project to GitHub
 setlocal enabledelayedexpansion
 
 set USERNAME=ballisticmessile
-set TOKEN=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
+set TOKEN=YOUR_GITHUB_TOKEN_HERE REM Replace with your personal access token
 set REPO_URL=https://%USERNAME%:%TOKEN%@github.com/%USERNAME%/cogni.git
 
 cd /d C:\Users\samruddhi\Desktop\cogni
